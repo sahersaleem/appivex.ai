@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
+
+:root {
+  --mint:          #00D68F;
+  --mint-dim:      #00b876;
+  --mint-glow:     rgba(0, 214, 143, 0.18);
+  --mint-glow-s:   rgba(0, 214, 143, 0.06);
+  --ink:           #0A0A0A;
+  --surface:       #111111;
+  --surface-2:     #161616;
+  --border:        rgba(255, 255, 255, 0.08);
+  --text-hi:       #FFFFFF;
+  --text-mid:      rgba(255, 255, 255, 0.60);
+  --text-lo:       rgba(255, 255, 255, 0.32);
+}
+
+/* ── Light mode ─────────────────────────── */
+[data-theme="light"] {
+  --surface:       #FFFFFF;
+  --surface-2:     #F7F7F7;
+  --border:        rgba(0, 0, 0, 0.08);
+  --text-hi:       #0A0A0A;
+  --text-mid:      rgba(0, 0, 0, 0.60);
+  --text-lo:       rgba(0, 0, 0, 0.35);
+}
+
+/* ── Base ───────────────────────────────── */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0A0A0A;
+  color: #FFFFFF;
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Shimmer text utility ───────────────── */
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    #fff 0%,
+    #00D68F 40%,
+    #fff 60%,
+    #fff 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+[data-theme="light"] .shimmer-text {
+  background: linear-gradient(
+    90deg,
+    #0A0A0A 0%,
+    #00D68F 40%,
+    #0A0A0A 60%,
+    #0A0A0A 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-ticker {
+  animation: ticker 28s linear infinite;
+  will-change: transform;
+}
