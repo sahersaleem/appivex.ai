@@ -17,9 +17,9 @@ const manrope = Manrope({
 })
 
 export const metadata: Metadata = {
-  title: 'Appovex — We Build the Tech That Helps You Scale',
+  title: 'Appivex — We Build the Tech That Helps You Scale',
   description:
-    'Big-Tech quality. Startup speed. Appovex helps small businesses and entrepreneurs enter the AI era with AI automation, SaaS development, Voice AI, and premium web design.',
+    'Big-Tech quality. Startup speed. Appivex helps small businesses and entrepreneurs enter the AI era with AI automation, SaaS development, Voice AI, and premium web design.',
   keywords: [
     'AI automation',
     'SaaS development',
@@ -28,11 +28,15 @@ export const metadata: Metadata = {
     'startup tech agency',
   ],
   openGraph: {
-    title: 'Appovex — We Build the Tech That Helps You Scale',
+    title: 'Appivex — We Build the Tech That Helps You Scale',
     description:
       'Big-Tech quality. Startup speed. Custom GPTs, SaaS builds, Voice AI, and high-conversion web design for entrepreneurs worldwide.',
     type: 'website',
-    url: 'https://appovex.com',
+    url: 'https://appivex.app',
+  },
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
   },
 }
 

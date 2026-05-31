@@ -39,11 +39,34 @@ export default function ContactPage() {
     name: '', email: '', company: '', service: '', message: '',
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (form.name && form.email && form.message) setSubmitted(true)
-  }
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!form.name || !form.email || !form.message) return
+
+    setLoading(true)
+    setError('')
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+
+      if (res.ok) {
+        setSubmitted(true)
+      } else {
+        setError('Something went wrong. Please email us directly at hello@appivex.app')
+      }
+    } catch {
+      setError('Something went wrong. Please email us directly at hello@appivex.app')
+    } finally {
+      setLoading(false)
+    }
+  }
   return (
     <main className="bg-[#0A0A0A]">
       <Navbar />
@@ -129,11 +152,20 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                className="inline-flex items-center gap-2.5 font-syne text-[12px] font-bold uppercase tracking-[0.07em] bg-[#00D68F] text-[#0A0A0A] px-8 py-4 rounded-xl hover:bg-white transition-all duration-200"
+                disabled={loading}
+                className="inline-flex items-center gap-2.5 font-syne text-[12px] font-bold 
+             uppercase tracking-[0.07em] bg-[#00D68F] text-[#0A0A0A] px-8 py-4 
+             rounded-xl hover:bg-white transition-all duration-200
+             disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                Send Message
-                <ArrowRight size={14} />
+                {loading ? 'Sending...' : 'Send Message'}
+                {!loading && <ArrowRight size={14} />}
               </button>
+
+              {/* Show error if something goes wrong */}
+              {error && (
+                <p className="font-dm text-[13px] text-red-400 mt-2">{error}</p>
+              )}
 
             </form>
           ) : (
@@ -166,7 +198,7 @@ export default function ContactPage() {
                 an honest conversation about your biggest bottleneck.
               </p>
               <Link
-                href="https://calendly.com/appivex"
+                href="https://calendly.com/hello-appivex/30min"
                 target="_blank"
                 className="inline-flex items-center gap-2 font-dm text-[13px] font-medium text-[#00D68F] border-b border-[rgba(0,214,143,0.3)] pb-px hover:border-[#00D68F] transition-all"
               >
@@ -182,9 +214,9 @@ export default function ContactPage() {
               </p>
               <div className="flex flex-col gap-4">
                 {[
-                  { label: 'Email',    value: 'hello@appivex.com'  },
-                  { label: 'WhatsApp', value: '+92 300 0000000'    },
-                  { label: 'LinkedIn', value: 'APPIVEX'            },
+                  { label: 'Email', value: 'hello@appivex.app' },
+                  { label: 'WhatsApp', value: '+923343619201' },
+                  { label: 'LinkedIn', value: 'APPIVEX' },
                 ].map(item => (
                   <div key={item.label}>
                     <p className="font-syne text-[9px] font-bold uppercase tracking-[0.14em] text-white/20 mb-1">

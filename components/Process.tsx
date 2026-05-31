@@ -110,7 +110,7 @@ export default function Process() {
             </p>
           </div>
           <Link
-            href="/contact"
+            href="https://calendly.com/hello-appivex/30min"
             className="inline-flex items-center gap-2 font-syne text-[11px] font-bold uppercase tracking-[0.07em] bg-[#00D68F] text-[#0A0A0A] px-6 py-3 rounded-lg hover:bg-white transition-all duration-200 whitespace-nowrap flex-shrink-0"
           >
             Book a Free Strategy Call
