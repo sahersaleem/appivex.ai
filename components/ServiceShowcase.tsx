@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ComponentType } from 'react'
 import { AnimatePresence, motion, useInView, useReducedMotion } from 'framer-motion'
 import { Pause, Play } from 'lucide-react'
-import { ChatbotDemo, CrmDemo, VoiceDemo, PortalDemo, type DemoProps } from './demos'
+import { ChatbotDemo, CrmDemo, VoiceDemo, PortalDemo, type DemoProps } from './Demos'
 
 const SCENE_MS = 9000 // how long each service is shown
 const TICK_MS = 80 // clock resolution: smooth enough, cheap to render
