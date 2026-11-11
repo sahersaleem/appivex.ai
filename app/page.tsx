@@ -8,6 +8,9 @@ import Process from '@/components/Process'
 import CTA from '@/components/CTA'
 import Footer from '@/components/Footer'
 import PortfolioPreview from '@/components/PortfolioPreview'
+import FeaturedProjects from '@/components/FeaturedProjects'
+import { FinalCTA } from './about/page'
+import HomeContactCTA from '@/components/Homecontactcta'
 
 export default function Home() {
   return (
@@ -16,11 +19,8 @@ export default function Home() {
       <Hero />
       <Ticker />
       <Advantage />
-      <Services />
-      <PortfolioPreview/>
-      <Global />
-      <Process />
-      <CTA />
+      <FeaturedProjects />
+      <HomeContactCTA />
       <Footer />
     </main>
   )

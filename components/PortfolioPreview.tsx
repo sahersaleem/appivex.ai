@@ -1,238 +1,326 @@
 'use client'
 
 import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { ArrowUpRight, ArrowRight } from 'lucide-react'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { ArrowRight, ArrowUpRight, Check } from 'lucide-react'
 
-const featured = {
-  type: 'Voice AI',
-  country: '🇺🇸 United States',
-  title: "AI Inbound Voice Agent — Davey's Plumbing",
-  desc: "Built a 24/7 inbound AI voice agent that handles every customer call, troubleshoots issues through a knowledge base, books appointments via the Joober API, and performs warm live transfers — zero human involvement required.",
-  stack: ['VAPI', 'GPT-4', 'Python FastAPI', 'Joober API', 'Live Transfer'],
-  metrics: [
-    { num: '0',   suffix: '',   label: 'Missed calls after hours' },
-    { num: '24',  suffix: '/7', label: 'Automated handling'       },
-    { num: '3',   suffix: 'wk', label: 'Deployment timeline'      },
-    { num: '100', suffix: '%',  label: 'Calls captured & logged'  },
-  ],
-  result: 'Every call answered. Every lead captured.',
-  href: '/work/daveys-plumbing',
+type CaseStudy = {
+  service: string
+  location: string
+  title: string
+  challenge: string
+  built: string
+  benefits: string[]
+  results: { value: string; label: string }[]
+  stack?: string[]
+  href: string
 }
 
-const projects = [
+/*
+  HOW TO ADD A PROJECT
+  Copy one object below and fill every field.
+  Only publish numbers you can back up with client data or your own logs.
+  Remove "results" entries you can't verify rather than rounding up.
+*/
+const caseStudies: CaseStudy[] = [
   {
-    type: 'AI Automation',
-    country: '🇬🇧 United Kingdom',
-    title: 'Workflow Automation for a UK Logistics Company',
-    desc: 'Operations team was spending 5 hours every Monday manually updating route data across 3 systems. We built an AI pipeline that pulls, processes, and updates all systems simultaneously — zero manual input.',
-    result: '18 hours saved every week',
+    service: 'Voice AI',
+    location: 'United States',
+    title: "24/7 inbound voice agent for Davey's Plumbing",
+    challenge:
+      'Calls arriving after hours or while the team was on a job went unanswered, so leads went to competitors and booking relied on staff being free.',
+    built:
+      'An AI voice agent that answers every call, troubleshoots common issues from a knowledge base, books appointments through the Joober API, and transfers to a person when needed.',
+    benefits: [
+      'No missed calls or lost leads outside office hours',
+      'Appointments land directly in the scheduling system, with no re-entry',
+      'Staff stay on jobs instead of answering the phone',
+      'Coverage around the clock without hiring extra call handlers',
+    ],
+    results: [
+      { value: '0', label: 'missed calls after hours' },
+      { value: '24/7', label: 'call handling' },
+      { value: '3 weeks', label: 'to deploy' },
+      { value: '100%', label: 'calls captured and logged' },
+    ],
+    stack: ['VAPI', 'GPT-4', 'Python FastAPI', 'Joober API'],
+    href: '/work/daveys-plumbing',
+  },
+  {
+    service: 'AI automation',
+    location: 'United Kingdom',
+    title: 'Route data automation for a UK logistics company',
+    challenge:
+      'The operations team spent five hours every Monday updating route data by hand across three separate systems.',
+    built:
+      'An AI pipeline that pulls, processes and updates all three systems in one run, with no manual input.',
+    benefits: [
+      'Hours of repetitive work returned to the operations team every week',
+      'Fewer copy-and-paste errors, and the systems always agree',
+      'Volume can grow without adding administrative headcount',
+    ],
+    results: [{ value: '18 hrs', label: 'saved every week' }],
     href: '/work/logistics-automation',
   },
   {
-    type: 'SaaS Development',
-    country: '🇺🇸 United States',
-    title: 'Full SaaS Build — B2B Scheduling Platform, MVP to 10K Users',
-    desc: 'End-to-end product from zero — multi-tenant architecture, Stripe billing, custom calendar engine, and full CI/CD pipeline. Shipped production-ready in under 9 weeks from kickoff.',
-    result: 'Live in 9 weeks · 10K users',
+    service: 'SaaS development',
+    location: 'United States',
+    title: 'B2B scheduling platform, from MVP to 10K users',
+    challenge:
+      'A founder needed a production-ready product, not a prototype, to start onboarding business customers quickly.',
+    built:
+      'A multi-tenant platform with Stripe billing, a custom calendar engine and a full CI/CD pipeline.',
+    benefits: [
+      'Revenue-ready from launch, with subscriptions and billing built in',
+      'Architecture that supports many customers without rework',
+      'Safe, repeatable releases through automated deployment',
+    ],
+    results: [
+      { value: '9 weeks', label: 'kickoff to production' },
+      { value: '10K', label: 'users' },
+    ],
     href: '/work/scheduling-saas',
   },
+]
+
+const solutions = [
+  {
+    service: 'RAG support chatbot',
+    title: '24/7 support assistant trained on your own documents',
+    problem: 'Customers and staff ask the same product, assembly and adjustment questions again and again.',
+    built:
+      'A chatbot that answers from uploaded PDFs and catalogs, replies in several languages, cites its sources, and hands over to a person when it is unsure.',
+    benefits: [
+      'Answers at any hour, in the customer’s language',
+      'Experts spend time on complex cases, not repeat questions',
+      'Every answer shows its source, so it can be checked',
+    ],
+    href: '/work/rag-support-chatbot',
+  },
+  {
+    service: 'Dealer and customer portal',
+    title: 'Self-service portal for quotes, orders and documents',
+    problem: 'Quote requests, order status and document requests all go through email and phone calls.',
+    built:
+      'A portal covering quote requests, order tracking, document downloads and status notifications.',
+    benefits: [
+      'Customers find order status themselves',
+      'Fewer “where is my order?” calls and emails',
+      'Documents are always one click away',
+    ],
+    href: '/work/dealer-portal',
+  },
+  {
+    service: 'Workflow automation',
+    title: 'From inquiry to assignment, with no manual steps',
+    problem: 'New inquiries are copied into the CRM, answered and assigned by hand, and some get delayed or missed.',
+    built:
+      'An automated flow: inquiry email, CRM entry, instant auto-reply, assignment to the right person, and a weekly report.',
+    benefits: [
+      'Every inquiry is logged and answered right away',
+      'The right person is notified without anyone sorting the inbox',
+      'Managers get a weekly report without building it',
+    ],
+    href: '/work/inquiry-automation',
+  },
+  {
+    service: 'Voice agent',
+    title: 'First-line call handling that books meetings and callbacks',
+    problem: 'Routine calls take up staff time, and calls outside working hours go unanswered.',
+    built:
+      'A voice agent that answers common questions, takes the caller’s details, and books meetings or callbacks.',
+    benefits: [
+      'Callers get an answer instead of voicemail',
+      'Staff only handle calls that need a person',
+      'Callbacks and meetings are booked automatically',
+    ],
+    href: '/work/voice-agent',
+  },
+  {
+    service: 'Systems integration',
+    title: 'ERP and CRM data in one dashboard',
+    problem: 'Data sits in separate systems, so teams re-enter it or work from out-of-date numbers.',
+    built: 'Integrations that sync ERP and CRM data into a single dashboard.',
+    benefits: [
+      'One view of customers, orders and activity',
+      'No double entry between systems',
+      'Decisions are based on current data',
+    ],
+    href: '/work/systems-integration',
+  },
+]
+
+const delivery = [
+  { title: 'Discovery', text: 'We map your workflow and agree the metrics up front.' },
+  { title: 'Pilot', text: 'One workflow automated, with results you can measure.' },
+  { title: 'Rollout', text: 'We extend what worked and connect your existing systems.' },
+  { title: 'Support', text: 'Documented handover and ongoing maintenance.' },
 ]
 
 export default function PortfolioPreview() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
+  const reduce = useReducedMotion()
+
+  const reveal = reduce
+    ? {}
+    : {
+        initial: { opacity: 0, y: 16 },
+        animate: inView ? { opacity: 1, y: 0 } : {},
+        transition: { duration: 0.5 },
+      }
 
   return (
-    <section className="bg-[#0A0A0A] py-24 px-6 lg:px-14" ref={ref}>
+    <section ref={ref} className="bg-[#0A0A0A] py-24 px-6 lg:px-14">
       <div className="max-w-[1160px] mx-auto">
-
         {/* Header */}
-        <div className="flex items-end justify-between mb-11">
-          <div>
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5 }}
-              className="flex items-center gap-3 font-syne text-[10px] font-bold uppercase tracking-[0.25em] text-[#00D68F] mb-4"
-            >
-              <span className="w-6 h-px bg-[#00D68F]" />
-              Our Work
-            </motion.p>
-            <motion.h2
-              initial={{ opacity: 0, y: 16 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.08 }}
-              className="font-syne font-extrabold text-[clamp(1.9rem,3vw,2.7rem)] leading-[1.1] tracking-[-0.025em] text-white"
-            >
-              Work that{' '}
-              <span className="text-[#00D68F]">speaks</span>
-              <br />for itself.
-            </motion.h2>
-          </div>
-          <Link
-            href="/work"
-            className="hidden md:inline-flex items-center gap-2 font-dm text-[13px] font-medium text-white/30 border-b border-white/10 pb-px hover:text-[#00D68F] hover:border-[#00D68F] transition-all whitespace-nowrap"
-          >
-            View All Projects
-            <ArrowRight size={12} />
-          </Link>
-        </div>
+        <motion.div {...reveal} className="max-w-[640px] mb-14">
+          <h2 className="font-syne font-extrabold text-[clamp(1.9rem,3vw,2.7rem)] leading-[1.1] tracking-[-0.025em] text-white mb-4">
+            Case studies: the problem, the build, the business result
+          </h2>
+          <p className="font-dm text-[16px] leading-[1.7] text-white/65">
+            Each project starts with a specific operational problem. Here is what we built and what
+            the company gained from it.
+          </p>
+        </motion.div>
 
-        <div className="grid grid-cols-1 gap-3">
+        {/* Case studies */}
+        <div className="divide-y divide-white/10 border-y border-white/10">
+          {caseStudies.map((c) => (
+            <article key={c.title} className="py-12 grid grid-cols-1 lg:grid-cols-12 gap-10">
+              {/* Left: identity + problem */}
+              <div className="lg:col-span-5">
+                <p className="font-dm text-[13px] text-white/50 mb-4">
+                  {c.service} for a client in {c.location}
+                </p>
+                <h3 className="font-syne font-extrabold text-[1.45rem] leading-[1.25] text-white mb-6">
+                  {c.title}
+                </h3>
 
-          {/* Featured */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.12 }}
-          >
-            <Link
-              href={featured.href}
-              className="block bg-[#0D0D0D] border border-white/[0.07] rounded-2xl p-10 group hover:border-[rgba(0,214,143,0.2)] transition-all duration-300 no-underline"
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                <h4 className="font-syne font-bold text-[13px] text-[#00D68F] mb-2">The problem</h4>
+                <p className="font-dm text-[15px] leading-[1.75] text-white/70 mb-6">{c.challenge}</p>
 
-                {/* Left */}
-                <div>
-                  {/* Meta — plain text, no pill */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-2">
-                      <span className="font-dm text-[12px] font-medium text-white/35">
-                        {featured.type}
-                      </span>
-                      <span className="text-white/15 text-xs">·</span>
-                      <span className="font-dm text-[12px] text-white/25">
-                        {featured.country}
-                      </span>
-                    </div>
-                    <div className="w-8 h-8 border border-white/[0.08] rounded-lg flex items-center justify-center group-hover:border-[rgba(0,214,143,0.35)] group-hover:bg-[rgba(0,214,143,0.06)] transition-all">
-                      <ArrowUpRight size={14} className="text-white/25 group-hover:text-[#00D68F] transition-colors" />
-                    </div>
-                  </div>
+                <h4 className="font-syne font-bold text-[13px] text-[#00D68F] mb-2">What we built</h4>
+                <p className="font-dm text-[15px] leading-[1.75] text-white/70">{c.built}</p>
 
-                  <h3 className="font-syne font-extrabold text-[1.4rem] text-white leading-[1.25] mb-4">
-                    {featured.title}
-                  </h3>
-                  <p className="font-dm text-[13.5px] font-light text-white/42 leading-[1.85] mb-6">
-                    {featured.desc}
+                {c.stack && (
+                  <p className="font-dm text-[13px] text-white/45 mt-5">
+                    Built with {c.stack.join(', ')}
                   </p>
+                )}
+              </div>
 
-                  {/* Stack — kept on featured only, looks like technical metadata */}
-                  <div className="flex flex-wrap gap-2">
-                    {featured.stack.map(s => (
-                      <span
-                        key={s}
-                        className="font-dm text-[11px] text-white/25 bg-white/[0.03] border border-white/[0.06] px-2.5 py-1 rounded-md"
-                      >
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+              {/* Right: benefits + results */}
+              <div className="lg:col-span-7 lg:pl-10 lg:border-l lg:border-white/10">
+                <h4 className="font-syne font-bold text-[13px] text-[#00D68F] mb-4">
+                  What the company gained
+                </h4>
+                <ul className="space-y-3 mb-8">
+                  {c.benefits.map((b) => (
+                    <li key={b} className="flex gap-3 font-dm text-[15px] leading-[1.6] text-white/85">
+                      <Check size={16} aria-hidden="true" className="text-[#00D68F] mt-1 shrink-0" />
+                      {b}
+                    </li>
+                  ))}
+                </ul>
 
-                {/* Right — metrics */}
-                <div className="grid grid-cols-2 gap-3">
-                  {featured.metrics.map((m) => (
-                    <div
-                      key={m.label}
-                      className={`rounded-xl p-4 border ${
-                        m.suffix === ''
-                          ? 'bg-[rgba(0,214,143,0.05)] border-[rgba(0,214,143,0.2)]'
-                          : 'bg-black/30 border-white/[0.06]'
-                      }`}
-                    >
-                      <div className="font-syne font-extrabold text-[1.7rem] text-white leading-none mb-1.5">
-                        {m.num}
-                        <span className="text-[#00D68F]">{m.suffix}</span>
-                      </div>
-                      <div className="font-dm text-[11px] font-light text-white/30 leading-[1.4]">
-                        {m.label}
-                      </div>
+                <dl className="flex flex-wrap gap-x-10 gap-y-5 mb-8">
+                  {c.results.map((r) => (
+                    <div key={r.label}>
+                      <dd className="font-syne font-extrabold text-[1.6rem] leading-none text-white">
+                        {r.value}
+                      </dd>
+                      <dt className="font-dm text-[13px] text-white/55 mt-1.5">{r.label}</dt>
                     </div>
                   ))}
+                </dl>
 
-                  <div className="col-span-2 flex items-center gap-2.5 bg-[rgba(0,214,143,0.06)] border border-[rgba(0,214,143,0.15)] rounded-xl px-4 py-3">
-                    <span className="text-[#00D68F] text-base">↑</span>
-                    <span className="font-dm text-[12px] font-medium text-[rgba(0,214,143,0.8)]">
-                      {featured.result}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </motion.div>
-
-          {/* Two smaller cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {projects.map((p, i) => (
-              <motion.div
-                key={p.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.22 + i * 0.1 }}
-              >
                 <Link
-                  href={p.href}
-                  className="block bg-[#0D0D0D] border border-white/[0.07] rounded-xl p-7 group hover:border-[rgba(0,214,143,0.18)] transition-all duration-300 h-full no-underline"
+                  href={c.href}
+                  className="inline-flex items-center gap-2 font-dm text-[14px] font-medium text-white border-b border-white/30 pb-px hover:text-[#00D68F] hover:border-[#00D68F] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00D68F]"
                 >
-                  {/* Meta — plain text, no pill */}
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="flex items-center gap-2">
-                      <span className="font-dm text-[12px] font-medium text-white/32">
-                        {p.type}
-                      </span>
-                      <span className="text-white/15 text-xs">·</span>
-                      <span className="font-dm text-[12px] text-white/22">
-                        {p.country}
-                      </span>
-                    </div>
-                    <div className="w-7 h-7 border border-white/[0.07] rounded-lg flex items-center justify-center group-hover:border-[rgba(0,214,143,0.3)] group-hover:bg-[rgba(0,214,143,0.05)] transition-all">
-                      <ArrowUpRight size={13} className="text-white/22 group-hover:text-[#00D68F] transition-colors" />
-                    </div>
-                  </div>
-
-                  <h3 className="font-syne font-bold text-[15px] text-white leading-[1.35] mb-3">
-                    {p.title}
-                  </h3>
-                  <p className="font-dm text-[12.5px] font-light text-white/38 leading-[1.8] mb-5">
-                    {p.desc}
-                  </p>
-
-                  {/* Result — plain text, no pill */}
-                  <p className="font-dm text-[12px] font-medium text-[#00D68F]">
-                    ↑ {p.result}
-                  </p>
+                  Read the full case study
+                  <ArrowUpRight size={14} aria-hidden="true" />
                 </Link>
-              </motion.div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* More solutions */}
+        <div className="mt-20">
+          <h3 className="font-syne font-extrabold text-[1.45rem] leading-[1.25] text-white mb-3">
+            More solutions we have built
+          </h3>
+          <p className="font-dm text-[15px] leading-[1.7] text-white/65 max-w-[600px] mb-8">
+            The same building blocks, applied to the repetitive work that slows teams down.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {solutions.map((s) => (
+              <article
+                key={s.title}
+                className="flex flex-col border border-white/10 rounded-xl p-7 bg-[#0D0D0D]"
+              >
+                <p className="font-dm text-[13px] text-white/50 mb-3">{s.service}</p>
+                <h4 className="font-syne font-bold text-[16px] leading-[1.35] text-white mb-4">
+                  {s.title}
+                </h4>
+                <p className="font-dm text-[14.5px] leading-[1.7] text-white/65 mb-3">{s.problem}</p>
+                <p className="font-dm text-[14.5px] leading-[1.7] text-white/65 mb-5">{s.built}</p>
+                <ul className="space-y-2.5 mb-6">
+                  {s.benefits.map((b) => (
+                    <li key={b} className="flex gap-2.5 font-dm text-[14px] leading-[1.55] text-white/85">
+                      <Check size={15} aria-hidden="true" className="text-[#00D68F] mt-0.5 shrink-0" />
+                      {b}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href={s.href}
+                  className="mt-auto inline-flex items-center gap-2 font-dm text-[14px] font-medium text-white border-b border-white/30 pb-px self-start hover:text-[#00D68F] hover:border-[#00D68F] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00D68F]"
+                >
+                  See how it works
+                  <ArrowUpRight size={14} aria-hidden="true" />
+                </Link>
+              </article>
             ))}
           </div>
         </div>
 
+        {/* How we deliver */}
+        <div className="mt-16">
+          <h3 className="font-syne font-extrabold text-[1.2rem] text-white mb-6">
+            How we deliver
+          </h3>
+          <ol className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {delivery.map((d, i) => (
+              <li key={d.title} className="border-t border-white/15 pt-4">
+                <p className="font-syne font-bold text-[14px] text-white mb-1.5">
+                  {i + 1}. {d.title}
+                </p>
+                <p className="font-dm text-[14px] leading-[1.65] text-white/60">{d.text}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+
         {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="flex flex-wrap items-center justify-center gap-5 mt-12"
-        >
-          <Link
-            href="/work"
-            className="inline-flex items-center gap-2.5 font-syne text-[12px] font-bold uppercase tracking-[0.07em] bg-[#00D68F] text-[#0A0A0A] px-7 py-3.5 rounded-xl hover:bg-white transition-all duration-200"
-          >
-            View All Projects
-            <ArrowRight size={13} />
-          </Link>
+        <div className="flex flex-wrap items-center gap-6 mt-14">
           <Link
             href="/contact"
-            className="font-dm text-[13px] font-medium text-white/35 border-b border-white/10 pb-px hover:text-[#00D68F] hover:border-[#00D68F] transition-all"
+            className="inline-flex items-center gap-2.5 font-syne text-[13px] font-bold bg-[#00D68F] text-[#0A0A0A] px-7 py-3.5 rounded-xl hover:bg-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00D68F]"
           >
-            or book a free strategy call
+            Start with a 2-week pilot
+            <ArrowRight size={14} aria-hidden="true" />
           </Link>
-        </motion.div>
-
+          <Link
+            href="/work"
+            className="font-dm text-[14px] font-medium text-white/65 border-b border-white/20 pb-px hover:text-[#00D68F] hover:border-[#00D68F] transition-colors"
+          >
+            See all projects
+          </Link>
+        </div>
       </div>
     </section>
   )

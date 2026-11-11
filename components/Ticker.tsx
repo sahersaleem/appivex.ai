@@ -9,22 +9,62 @@ const items = [
   'Workflow Automation',
 ]
 
-export default function Ticker() {
-  const doubled = [...items, ...items]
-
+function Row({ hidden = false }: { hidden?: boolean }) {
   return (
-    <div className="border-t border-b border-white/[0.06] bg-[#111111] py-3 overflow-hidden">
-      <div className="flex gap-12 whitespace-nowrap animate-ticker w-max">
-        {doubled.map((item, i) => (
+    <ul
+      className="flex shrink-0 items-center"
+      aria-hidden={hidden || undefined}
+    >
+      {items.map((item) => (
+        <li
+          key={item}
+          className="flex shrink-0 items-center gap-3 px-6 font-syne text-[13px] font-semibold text-white/45 transition-colors hover:text-white"
+        >
           <span
-            key={i}
-            className="font-syne text-[11px] font-bold uppercase tracking-[0.15em] text-white/40 flex-shrink-0"
-          >
-            <span className="text-[#00D68F] mr-1.5">◆</span>
-            {item}
-          </span>
-        ))}
+            aria-hidden
+            className="h-[5px] w-[5px] rotate-45 bg-[#00D68F]"
+          />
+          {item}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+export default function Ticker() {
+  return (
+    <div
+      className="ticker group relative overflow-hidden border-y border-white/[0.06] bg-[#0D0D0D] py-4"
+      aria-label="Our services"
+      style={{
+        maskImage:
+          'linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)',
+        WebkitMaskImage:
+          'linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)',
+      }}
+    >
+      <div className="ticker-track flex w-max whitespace-nowrap">
+        <Row />
+        <Row hidden />
       </div>
+
+      <style>{`
+        .ticker-track {
+          animation: ticker-scroll 40s linear infinite;
+          will-change: transform;
+        }
+        .ticker:hover .ticker-track,
+        .ticker:focus-within .ticker-track {
+          animation-play-state: paused;
+        }
+        @keyframes ticker-scroll {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-50%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .ticker-track { animation: none; }
+        }
+      `}</style>
     </div>
   )
 }
