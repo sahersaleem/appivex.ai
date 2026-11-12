@@ -93,7 +93,7 @@ export default function CTA() {
 
             {/* Book a call */}
             <Link
-              href="https://calendly.com/hello-appivex/30min"
+              href="https://calendly.com/sahersaleem/30min"
               className="
                 inline-flex items-center gap-2
                 font-dm text-[13px] font-medium

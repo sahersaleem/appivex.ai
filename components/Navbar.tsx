@@ -101,7 +101,7 @@ export default function Navbar() {
  
         {/* ── Desktop CTA ───────────────────────────────────────────── */}
         <Link
-          href="https://calendly.com/hello-appivex/30min"
+          href="https://calendly.com/sahersaleem/30min"
           className="
             hidden md:inline-flex items-center gap-2
             font-syne text-[12px] font-bold uppercase tracking-[0.08em]

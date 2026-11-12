@@ -11,7 +11,7 @@ const LINKS = {
   portfolio: '/portfolio',
   contact: '/contact',
   booking: '/contact#book', // swap for your Calendly / Cal.com URL
-  email: 'support@appivex.app', // confirm real address
+  email: 'sahersaleem72@gmail.com', // confirm real address
 }
 
 type Founder = {

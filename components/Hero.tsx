@@ -71,7 +71,7 @@ export default function Hero() {
                   <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-0.5" />
                 </Link>
                 <Link
-                  href="/work"
+                  href="/portfolio"
                   className="inline-flex w-full items-center justify-center rounded-lg border border-white/15 px-6 py-3.5 font-dm text-[15px] font-medium text-[var(--text-hi)] transition-colors duration-200 hover:border-white/30 hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--mint)] sm:w-auto"
                 >
                   Explore Our Work

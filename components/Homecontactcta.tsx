@@ -46,7 +46,7 @@ export default function HomeContactCTA() {
             <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-1" />
           </Link>
           <a
-            href="https://calendly.com/hello-appivex/30min"
+            href="https://calendly.com/sahersaleem/30min"
             target="_blank"
             rel="noopener noreferrer"
             className="group font-dm text-[13px] text-white/55 transition-colors hover:text-[#00D68F]"
